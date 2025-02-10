@@ -234,7 +234,28 @@ class EnemyModule(EbModule):
     def upgrade_project(self, old_version, new_version, rom, resource_open_r, resource_open_w, resource_delete):
         if old_version == new_version:
             return
-        elif old_version <= 13:
+        elif old_version == 12:
+            replace_field_in_yml(resource_name="enemy_configuration_table",
+                                 resource_open_r=resource_open_r,
+                                 resource_open_w=resource_open_w,
+                                 key="Flash vulnerability",
+                                 value_map={"100%": "99%",
+                                            "70%": "50%",
+                                            "40%": "10%",
+                                            "5%": "0%"}),
+            replace_field_in_yml(resource_name="enemy_configuration_table",
+                                 resource_open_r=resource_open_r,
+                                 resource_open_w=resource_open_w,
+                                 key="Hypnosis/Brainshock vulnerability",
+                                 value_map={"100%": "99%"}),
+            replace_field_in_yml(resource_name="enemy_configuration_table",
+                                 resource_open_r=resource_open_r,
+                                 resource_open_w=resource_open_w,
+                                 key="Paralysis vulnerability",
+                                 value_map={"100%": "99%"})
+            self.upgrade_project(
+                old_version + 1, new_version, rom, resource_open_r, resource_open_w, resource_delete)
+        elif old_version == 3:
             replace_field_in_yml(resource_name="enemy_configuration_table",
                                  resource_open_r=resource_open_r,
                                  resource_open_w=resource_open_w,
@@ -265,25 +286,7 @@ class EnemyModule(EbModule):
                                             4: "16/128",
                                             5: "32/128",
                                             6: "64/128",
-                                            7: "128/128"}),
-            replace_field_in_yml(resource_name="enemy_configuration_table",
-                                 resource_open_r=resource_open_r,
-                                 resource_open_w=resource_open_w,
-                                 key="Flash vulnerability",
-                                 value_map={"100%": "99%",
-                                            "70%": "50%",
-                                            "40%": "10%",
-                                            "5%": "0%"}),
-            replace_field_in_yml(resource_name="enemy_configuration_table",
-                                 resource_open_r=resource_open_r,
-                                 resource_open_w=resource_open_w,
-                                 key="Hypnosis/Brainshock vulnerability",
-                                 value_map={"100%": "99%"}),
-            replace_field_in_yml(resource_name="enemy_configuration_table",
-                                 resource_open_r=resource_open_r,
-                                 resource_open_w=resource_open_w,
-                                 key="Paralysis vulnerability",
-                                 value_map={"100%": "99%"})
+                                            7: "128/128"})
             self.upgrade_project(
                 old_version + 1, new_version, rom, resource_open_r, resource_open_w, resource_delete)
         else:
