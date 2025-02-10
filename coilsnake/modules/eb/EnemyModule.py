@@ -265,7 +265,31 @@ class EnemyModule(EbModule):
                                             4: "16/128",
                                             5: "32/128",
                                             6: "64/128",
-                                            7: "128/128"})
+                                            7: "128/128"}),
+            replace_field_in_yml(resource_name="enemy_configuration_table",
+                                 resource_open_r=resource_open_r,
+                                 resource_open_w=resource_open_w,
+                                 key="Flash vulnerability",
+                                 value_map={0: "99%",
+                                            1: "50%",
+                                            2: "10%",
+                                            3: "0%"}),
+            replace_field_in_yml(resource_name="enemy_configuration_table",
+                                 resource_open_r=resource_open_r,
+                                 resource_open_w=resource_open_w,
+                                 key="Hypnosis/Brainshock vulnerability",
+                                 value_map={0: "99%",
+                                            1: "50%",
+                                            2: "10%",
+                                            3: "0%"}),
+            replace_field_in_yml(resource_name="enemy_configuration_table",
+                                 resource_open_r=resource_open_r,
+                                 resource_open_w=resource_open_w,
+                                 key="Paralysis vulnerability",
+                                 value_map={0: "99%",
+                                            1: "50%",
+                                            2: "10%",
+                                            3: "0%"})
             self.upgrade_project(
                 old_version + 1, new_version, rom, resource_open_r, resource_open_w, resource_delete)
         else:
