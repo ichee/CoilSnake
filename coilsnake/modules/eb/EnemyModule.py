@@ -234,7 +234,7 @@ class EnemyModule(EbModule):
     def upgrade_project(self, old_version, new_version, rom, resource_open_r, resource_open_w, resource_delete):
         if old_version == new_version:
             return
-        elif old_version <= 13:
+        elif old_version == 13:
             replace_field_in_yml(resource_name="enemy_configuration_table",
                                  resource_open_r=resource_open_r,
                                  resource_open_w=resource_open_w,
