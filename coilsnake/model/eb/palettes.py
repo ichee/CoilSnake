@@ -20,7 +20,10 @@ class EbColor(EqualityMixin, StringRepresentationMixin):
             self.r = self.g = self.b = 0
             self.used = False
         else:
-            self.from_tuple((r, g, b))
+            self.r = r
+            self.g = g
+            self.b = b
+            self.used = True
 
     def __eq__(self, other):
         return ((self.r == other.r)
@@ -49,16 +52,16 @@ class EbColor(EqualityMixin, StringRepresentationMixin):
 
     def from_tuple(self, rgb):
         self.used = True
-        self.r, self.g, self.b = (val & 0xf8 for val in rgb)
+        self.r, self.g, self.b = rgb
 
     def tuple(self):
         return self.r, self.g, self.b
 
     def from_list(self, rgb_list, offset=0):
-        rgbs = rgb_list[offset:offset+3]
-        if not rgbs:
-            rgbs = (0, 0, 0)
-        self.from_tuple(rgbs)
+        self.used = True
+        self.r = rgb_list[offset] & 0xf8
+        self.g = rgb_list[offset + 1] & 0xf8
+        self.b = rgb_list[offset + 2] & 0xf8
 
     def to_list(self, rgb_list, offset=0):
         rgb_list[offset] = self.r
