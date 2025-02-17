@@ -16,19 +16,6 @@ def check_range_validity(range, size):
     elif (begin < 0) or (end >= size):
         raise OutOfBoundsError("Invalid range[(%#x,%#x)] provided" % (begin, end))
 
-def fix_slice(key, size):
-    if not (key.step == 1 or key.step is None):
-        raise InvalidArgumentError("Slice step must be 1 or None, but is {}".format(key.step))
-    start, stop = key.start, key.stop
-    def fix_single_index(x, default):
-        if x is None:
-            x = default
-        elif x < 0:
-            x += size
-        return x
-    start = fix_single_index(start, 0)
-    stop = fix_single_index(stop, size)
-    return slice(start, stop)
 
 class Block(object):
     def __init__(self, size=0):
@@ -122,7 +109,6 @@ class Block(object):
 
     def __getitem__(self, key):
         if isinstance(key, slice):
-            key = fix_slice(key, self.size)
             if key.start > key.stop:
                 raise InvalidArgumentError("Second argument of slice %s must be greater than the first" % key)
             elif (key.start < 0) or (key.stop - 1 >= self.size):
@@ -150,7 +136,6 @@ class Block(object):
                 self.data[key] = item
         elif isinstance(key, slice) and \
                 (isinstance(item, list) or isinstance(item, array.array) or isinstance(item, Block)):
-            key = fix_slice(key, self.size)
             if key.start > key.stop:
                 raise InvalidArgumentError("Second argument of slice %s must be greater than  the first" % key)
             elif (key.start < 0) or (key.stop - 1 >= self.size):
@@ -183,13 +168,9 @@ class Block(object):
     def __ne__(self, other):
         return not (self == other)
 
-    def crc32(self):
+    def __hash__(self):
         return crc32(self.data)
 
-    # Don't rely on this having the same result on different machines!
-    # Use self.crc32() if you're comparing with a known CRC value.
-    def __hash__(self):
-        return self.crc32()
 
 class AllocatableBlock(Block):
     def reset(self, size=0):
